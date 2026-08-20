@@ -1,48 +1,63 @@
 # DeltaF1
 
-Comparador de tempos de volta entre carros de F1 em pistas e anos diferentes.
+Projeto em Python para coleta e análise de dados históricos da Fórmula 1.
 
-**Status:** em início
+A ideia do DeltaF1 é explorar uma pergunta que parece simples:
 
-## A pergunta
+> Como comparar o desempenho de carros de Fórmula 1 de épocas diferentes?
 
-Um carro de 2004 era mais rápido que o de 2014 em Monza?
+Comparar apenas tempos de pole ou melhores voltas pode ser enganoso, já que fatores como regulamento, pneus, combustível, condições da pista e alterações no circuito mudam ao longo dos anos.
 
-Resposta ingênua: comparar o tempo de pole. Isso está errado — traçado,
-asfalto, pneu, combustível e regulamento mudaram. Este projeto tenta medir
-o que dá pra medir.
+O projeto está sendo desenvolvido para coletar e organizar esses dados antes de realizar as comparações.
 
-## Fonte de dados
+## O que já foi implementado
 
-Jolpica-F1, sucessor do Ergast.
-Base: https://api.jolpi.ca/ergast/f1/
+Atualmente, o projeto possui uma primeira etapa de ingestão de dados utilizando a API pública Jolpica-F1
 
-Consequência: a API pública deste projeto nunca consulta o Jolpica em
-tempo de requisição. Ingestão offline, banco local.
+O código:
 
-## Perguntas em aberto
+* consulta o calendário de uma temporada
+* identifica uma corrida através do circuito
+* utiliza o número da etapa para buscar os dados de volta
+* acessa os tempos individuais retornados pela API
+* converte tempos no formato `minutos:segundos.milissegundos` para um inteiro em milissegundos
 
-- [ ] Qual o limite de requisições por hora sem autenticação? (fonte: ?)
-- [ ] Quando exatamente o Ergast foi desligado? (fonte: ?)
-- [ ] Desde que ano existem tempos volta a volta?
-- [ ] Desde que ano existem pit stops?
-- [ ] Desde que ano a classificação vem separada em Q1/Q2/Q3?
-- [ ] Qual o `limit` máximo por página? Como funciona o `offset`?
-- [ ] O que dizem os termos de uso sobre cache e redistribuição?
-- [ ] Quando Monza foi recapeada ou mudou de traçado?
+## Fonte dos dados
 
-## Decisões
+O projeto utiliza a [Jolpica-F1](https://api.jolpi.ca/ergast/f1/).
 
-- Tempo de volta em **inteiro de milissegundos**. Nunca float.
-- Mediana e MAD, nunca média e desvio-padrão — safety car destrói os dois.
-- Nenhum endpoint devolve número sem intervalo.
-- Toda resposta carrega `caveats[]`: o que aquela comparação não controla.
-  Isso é a implementação do "declarar em voz alta o que não dá".
+A proposta é realizar a ingestão dos dados separadamente e armazená-los localmente, evitando depender da API externa durante futuras consultas da aplicação.
 
-## Fora de escopo
+## Tecnologias
 
-Telemetria ponto a ponto. Previsão. Login. Front. WEC.
+* Python
+* HTTPX
+* Git
+* APIs REST / JSON
 
-## Como rodar
+## Estrutura atual
 
-Ainda não roda.
+```text
+deltaf1/
+├── src/
+│   └── deltaf1/
+│       ├── __init__.py
+│       └── ingestion.py
+├── .gitignore
+├── .env.example
+├── pyproject.toml
+└── README.md
+```
+
+## Próximos passos
+
+* implementar paginação da API
+* coletar todas as voltas de uma corrida
+* separar a lógica de ingestão em funções
+* persistir os dados localmente
+* adicionar testes
+* criar métricas para comparação entre temporadas
+
+## Objetivo de longo prazo
+
+Construir uma aplicação capaz de comparar dados de desempenho entre diferentes temporadas da Fórmula 1, deixando explícitas as limitações estatísticas de cada comparação.
