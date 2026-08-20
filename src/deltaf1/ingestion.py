@@ -3,7 +3,7 @@ import httpx
 
 JOLPICA_BASE_URL = "https://api.jolpi.ca/ergast/f1"
 
-# Busca do calendário de 2025 para checar o 'round' de Interlagos
+# Busca no calendário de 2025 para checar o 'round' de Interlagos
 response = httpx.get(f"{JOLPICA_BASE_URL}/2025.json")
 response.raise_for_status()
 
@@ -11,14 +11,14 @@ data = response.json()
 
 races = data["MRData"]["RaceTable"]["Races"]
 
-# Busco Interlagos nas corridas da temporada
+# Busco Interlagos nas corridas da temp
 for race in races:
     if race["Circuit"]["circuitId"] == "interlagos":
         round_number = race["round"]
 
         print(f"O round de Interlagos é {round_number}")
 
-        # Offset separado para depois poder automatizar a paginação
+        # Offset separado p/ depois poder automatizar a paginação!?
         offset = 30
 
         # Agora que tenho o 'round', posso buscar os tempos de volta
