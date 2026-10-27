@@ -1,0 +1,6 @@
+.env
+.venv
+/src/deltaf1/pratice.py
+__pycache__/
+.pytest_cache/
+*.egg-info/

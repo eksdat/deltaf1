@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deltaf1"
+version = "0.1.0"
+description = "Comparação de tempos de volta da Fórmula 1 entre épocas diferentes"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["httpx"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
